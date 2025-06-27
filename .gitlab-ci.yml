@@ -269,10 +269,6 @@ backup_database:
     - echo "Commit: $CI_COMMIT_SHA"
     - echo "Branch: $CI_COMMIT_REF_NAME"
 
-# Apply notifications to important jobs
-deploy_production:
-  <<: *notification
-
 # ========================================
 # RULES AND CONDITIONS
 # ========================================
