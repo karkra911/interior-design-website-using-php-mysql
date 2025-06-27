@@ -73,18 +73,18 @@ unit_tests:
     - docker-php-ext-install mysqli pdo pdo_mysql
     - mysql --version
   script:
-    - echo "🧪 Running application tests..."
+    - echo "🧪 Running application validation tests..."
     - php -v
+    - echo "Testing database connection..."
     - mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};"
     - mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} < database.sql
-    - echo "✅ Database setup completed"
-    - echo "✅ Tests completed successfully"
-  artifacts:
-    reports:
-      junit: test-results.xml
-    paths:
-      - test-results/
-    expire_in: 1 week
+    - echo "Testing PHP file syntax..."
+    - find . -name "*.php" -exec php -l {} \;
+    - echo "Testing database schema..."
+    - mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} -e "SHOW TABLES;"
+    - mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} -e "DESCRIBE users;"
+    - mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} -e "DESCRIBE snippets;"
+    - echo "✅ All validation tests passed successfully"
   only:
     - branches
     - merge_requests
@@ -99,11 +99,22 @@ database_tests:
     - docker-php-ext-install mysqli
   script:
     - echo "🗄️ Testing database connectivity and schema..."
-    - mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "SHOW DATABASES;"
-    - mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "CREATE DATABASE ${MYSQL_DATABASE};"
+    - echo "Testing MySQL connection..."
+    - mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "SELECT VERSION();"
+    - echo "Creating test database..."
+    - mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};"
+    - echo "Importing database schema..."
     - mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} < database.sql
+    - echo "Validating table structure..."
     - mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} -e "SHOW TABLES;"
-    - echo "✅ Database tests completed"
+    - mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} -e "SELECT COUNT(*) as table_count FROM information_schema.tables WHERE table_schema = '${MYSQL_DATABASE}';"
+    - echo "Testing table relationships..."
+    - mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} -e "SHOW CREATE TABLE snippets;"
+    - echo "Testing basic database operations..."
+    - mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} -e "INSERT INTO users (username, password) VALUES ('test_user', 'test_password');"
+    - mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} -e "SELECT COUNT(*) FROM users WHERE username = 'test_user';"
+    - mysql -h mysql -u root -p${MYSQL_ROOT_PASSWORD} ${MYSQL_DATABASE} -e "DELETE FROM users WHERE username = 'test_user';"
+    - echo "✅ Database tests completed successfully"
   only:
     - branches
     - merge_requests
