@@ -1,0 +1,37 @@
+body {
+    padding-top: 56px; /* Adjust for fixed navbar */
+    background-color: #f8f9fa;
+}
+
+.jumbotron {
+    background-color: #e9ecef;
+    padding: 2rem;
+    border-radius: .3rem;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+pre {
+    background-color: #282c34;
+    color: #abb2bf;
+    padding: 15px;
+    border-radius: 5px;
+    overflow-x: auto;
+}
+
+code {
+    font-family: 'Fira Code', 'Consolas', 'Monaco', 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 0.9em;
+}
+
+/* Basic PHP highlight_string styling */
+.string { color: #98c379; } /* Green */
+.keyword { color: #c678dd; } /* Purple */
+.comment { color: #5c6370; } /* Gray */
+.variable { color: #e06c75; } /* Red */
+.html { color: #e5c07b; } /* Yellow */
+.default { color: #abb2bf; } /* Light Gray */
+.builtin { color: #61afef; } /* Blue */

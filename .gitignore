@@ -1,0 +1,61 @@
+# PHP
+*.log
+*.tmp
+*.cache
+
+# Database configuration (for security)
+# Uncomment the next line if you want to ignore db.php for production
+# includes/db.php
+
+# Composer
+vendor/
+composer.lock
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Temporary files
+temp/
+tmp/
+
+# User uploads (if any)
+uploads/
+images/user_uploads/
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Cache directories
+cache/
+logs/
+
+# PHPStorm
+.phpstorm.meta.php
+
+# Deployment files
+deploy.zip
+*.tar.gz
+
+# Development tools
+phpunit.xml
+.phpunit.result.cache
